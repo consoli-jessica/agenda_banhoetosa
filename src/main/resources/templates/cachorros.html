@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<header th:replace="~{layout :: nav}"></header>
+<main>
+    <h1>Cachorros</h1>
+    <div th:replace="~{layout :: avisos}"></div>
+    <p th:if="${#lists.isEmpty(donos)}">Cadastre um <a th:href="@{/app/clientes}">cliente</a> antes de registrar o cão.</p>
+    <div class="painel">
+        <form method="post" th:action="@{/app/cachorros}">
+            <h2>Novo cachorro</h2>
+            <label>Nome
+                <input name="nome" th:value="${nome}" required maxlength="80">
+            </label>
+            <label>Dono
+                <select name="donoId" required>
+                    <option value="">Selecione</option>
+                    <option th:each="dono : ${donos}" th:value="${dono.id}" th:text="${dono.nomeCompleto}"
+                            th:selected="${donoId == dono.id}">Ana</option>
+                </select>
+            </label>
+            <label>Raça
+                <select name="racaId">
+                    <option value="">Selecione</option>
+                    <option th:each="raca : ${racas}" th:value="${raca.id}" th:text="${raca.nome}"
+                            th:selected="${racaId == raca.id}">SRD</option>
+                </select>
+            </label>
+            <label>Nova raça
+                <input name="novaRaca" th:value="${novaRaca}" maxlength="80" placeholder="Preencha para cadastrar outra">
+            </label>
+            <button type="submit">Cadastrar</button>
+        </form>
+        <div>
+            <h2>Cadastrados</h2>
+            <table>
+                <thead>
+                <tr><th>Nome</th><th>Raça</th><th>Dono</th></tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(lista)}">
+                    <td colspan="3">Nenhum cachorro cadastrado.</td>
+                </tr>
+                <tr th:each="cao : ${lista}">
+                    <td th:text="${cao.nome}">Bob</td>
+                    <td th:text="${cao.raca.nome}">SRD</td>
+                    <td th:text="${cao.dono.nomeCompleto}">Ana</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<header th:replace="~{layout :: nav}"></header>
+<main class="home">
+    <img th:src="@{/img/cachorro.png}" alt="Cachorro de touca rosa pronto para o banho">
+    <a class="botao cta" th:href="@{/agenda}">Agende Aqui</a>
+</main>
+</body>
+</html>

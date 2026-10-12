@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head th:replace="~{layout :: head}"></head>
+<body class="login-body">
+<main class="cartao estreito">
+    <p class="marca">Banho e Tosa</p>
+    <h1>Entrar</h1>
+    <div th:replace="~{layout :: avisos}"></div>
+    <form method="post" th:action="@{/login}">
+        <label>Usuário
+            <input name="usuario" th:value="${usuario}" autocomplete="username" required autofocus>
+        </label>
+        <label>Senha
+            <input name="senha" type="password" autocomplete="current-password" required>
+        </label>
+        <button type="submit">Entrar</button>
+    </form>
+    <p class="dica">Usuário de teste <strong>atendente</strong><br>Senha <strong>banho123</strong></p>
+</main>
+</body>
+</html>

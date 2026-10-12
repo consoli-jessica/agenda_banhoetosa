@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<header th:replace="~{layout :: nav}"></header>
+<main>
+    <div class="topo">
+        <h1>Agenda</h1>
+        <a class="botao" th:href="@{/app/agendamentos/novo(data=${novoEm})}">Novo agendamento</a>
+    </div>
+    <div th:replace="~{layout :: avisos}"></div>
+    <div class="mes">
+        <a th:href="@{/agenda(mes=${mesAnterior})}" aria-label="Mês anterior">‹</a>
+        <h2 th:text="${tituloMes}">outubro 2026</h2>
+        <a th:href="@{/agenda(mes=${mesSeguinte})}" aria-label="Próximo mês">›</a>
+    </div>
+    <div class="grade">
+        <div class="semana">Seg</div>
+        <div class="semana">Ter</div>
+        <div class="semana">Qua</div>
+        <div class="semana">Qui</div>
+        <div class="semana">Sex</div>
+        <div class="semana">Sáb</div>
+        <div class="semana">Dom</div>
+        <th:block th:each="semana : ${semanas}">
+            <div th:each="dia : ${semana}" th:class="${dia.css}">
+                <a class="num" th:href="@{/agenda(mes=${dia.iso.substring(0,7)},dia=${dia.iso})}" th:text="${dia.numero}">1</a>
+                <a class="chip" th:each="chip, stat : ${dia.chips}" th:if="${stat.index < 3}"
+                   th:href="@{/app/agendamentos/{id}/editar(id=${chip.id})}" th:text="${chip.texto}">14:00 Bob</a>
+                <span class="mais" th:if="${#lists.size(dia.chips) > 3}"
+                      th:text="'+' + (${#lists.size(dia.chips) - 3})"></span>
+            </div>
+        </th:block>
+    </div>
+    <section class="lista">
+        <div class="topo">
+            <h2 th:text="${tituloLista}">Agendamentos do mês</h2>
+            <a th:if="${!diaSelecionado.isEmpty()}" th:href="@{/agenda(mes=${mes})}">Ver o mês inteiro</a>
+        </div>
+        <p th:if="${#lists.isEmpty(linhas)}">Nenhum agendamento neste período.</p>
+        <ul>
+            <li th:each="linha : ${linhas}">
+                <div>
+                    <strong th:text="${linha.quando}">12/10 14:00</strong>
+                    <span th:text="${linha.resumo}">Bob · Banho · Ana</span>
+                </div>
+                <a th:href="@{/app/agendamentos/{id}/editar(id=${linha.id})}">Editar</a>
+            </li>
+        </ul>
+    </section>
+</main>
+</body>
+</html>

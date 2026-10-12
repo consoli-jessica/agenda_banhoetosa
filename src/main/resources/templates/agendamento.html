@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<header th:replace="~{layout :: nav}"></header>
+<main>
+    <div class="topo">
+        <h1 th:text="${titulo}">Agendamento</h1>
+        <a th:href="@{/agenda}">Voltar à agenda</a>
+    </div>
+    <div th:replace="~{layout :: avisos}"></div>
+    <p th:if="${#lists.isEmpty(cachorros)}">Cadastre um <a th:href="@{/app/cachorros}">cachorro</a> antes de agendar.</p>
+    <p th:if="${#lists.isEmpty(servicos)}">Não há serviços de banho ou tosa cadastrados.</p>
+    <form class="cartao estreito" th:if="${!#lists.isEmpty(cachorros) and !#lists.isEmpty(servicos)}"
+          method="post"
+          th:action="${id} == null ? @{/app/agendamentos} : @{/app/agendamentos/{id}(id=${id})}">
+        <label>Cachorro
+            <select name="cachorroId" required>
+                <option value="">Selecione</option>
+                <option th:each="cao : ${cachorros}" th:value="${cao.id}"
+                        th:text="${cao.nome + ' — ' + cao.dono.nomeCompleto + ' (' + cao.raca.nome + ')'}"
+                        th:selected="${cachorroId == cao.id}">Bob</option>
+            </select>
+        </label>
+        <label>Serviço
+            <select name="servicoId" required>
+                <option value="">Selecione</option>
+                <option th:each="servico : ${servicos}" th:value="${servico.id}"
+                        th:text="${servico.descricao + ' (' + servico.tempoDuracao + ' min)'}"
+                        th:selected="${servicoId == servico.id}">Banho</option>
+            </select>
+        </label>
+        <label>Data e horário
+            <input name="data" type="datetime-local" th:value="${data}" required>
+        </label>
+        <button type="submit" th:text="${id} == null ? 'Agendar' : 'Salvar'">Agendar</button>
+    </form>
+    <form th:if="${id != null}" method="post" th:action="@{/app/agendamentos/{id}/excluir(id=${id})}"
+          onsubmit="return confirm('Excluir este agendamento?')">
+        <button type="submit" class="perigo">Excluir agendamento</button>
+    </form>
+</main>
+</body>
+</html>

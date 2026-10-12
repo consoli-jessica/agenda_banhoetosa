@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<header th:replace="~{layout :: nav}"></header>
+<main>
+    <h1>Clientes</h1>
+    <div th:replace="~{layout :: avisos}"></div>
+    <div class="painel">
+        <form method="post" th:action="@{/app/clientes}">
+            <h2>Novo cliente</h2>
+            <label>Nome completo
+                <input name="nomeCompleto" th:value="${nomeCompleto}" required maxlength="120">
+            </label>
+            <label>Telefone
+                <input name="telefone" th:value="${telefone}" required maxlength="30">
+            </label>
+            <label>Endereço
+                <textarea name="endereco" rows="3" maxlength="200" th:text="${endereco}"></textarea>
+            </label>
+            <button type="submit">Cadastrar</button>
+        </form>
+        <div>
+            <h2>Cadastrados</h2>
+            <table>
+                <thead>
+                <tr><th>Nome</th><th>Telefone</th><th>Endereço</th></tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(lista)}">
+                    <td colspan="3">Nenhum cliente cadastrado.</td>
+                </tr>
+                <tr th:each="cliente : ${lista}">
+                    <td th:text="${cliente.nomeCompleto}">Ana</td>
+                    <td th:text="${cliente.telefone}">11999999999</td>
+                    <td th:text="${cliente.endereco}">Rua A</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>
