@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,23 +29,25 @@ public class AgendamentoController {
     private final CachorroService cachorros;
     private final ServicoService servicos;
     private final ClienteService clientes;
+    private final Respostas respostas;
 
     public AgendamentoController(AgendamentoService agendamentos, CachorroService cachorros,
-            ServicoService servicos, ClienteService clientes) {
+            ServicoService servicos, ClienteService clientes, Respostas respostas) {
         this.agendamentos = agendamentos;
         this.cachorros = cachorros;
         this.servicos = servicos;
         this.clientes = clientes;
+        this.respostas = respostas;
     }
 
     @GetMapping
-    public List<Agendamento> listar() {
-        return agendamentos.listar();
+    public List<AgendamentoResposta> listar(@RequestParam(required = false) String expand) {
+        return respostas.agendamentos(agendamentos.listar(), Expansao.de(expand, Respostas.AGENDAMENTO));
     }
 
     @GetMapping("/{id}")
-    public Agendamento buscar(@PathVariable Long id) {
-        return agendamentos.buscar(id);
+    public AgendamentoResposta buscar(@PathVariable Long id, @RequestParam(required = false) String expand) {
+        return respostas.agendamento(agendamentos.buscar(id), Expansao.de(expand, Respostas.AGENDAMENTO));
     }
 
     @PostMapping

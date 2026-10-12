@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,19 +23,21 @@ import com.consoli.agenda_banhoetosa.service.ServicoService;
 public class ServicoController {
 
     private final ServicoService servicos;
+    private final Respostas respostas;
 
-    public ServicoController(ServicoService servicos) {
+    public ServicoController(ServicoService servicos, Respostas respostas) {
         this.servicos = servicos;
+        this.respostas = respostas;
     }
 
     @GetMapping
-    public List<Servico> listar() {
-        return servicos.listar();
+    public List<ServicoResposta> listar(@RequestParam(required = false) String expand) {
+        return respostas.servicos(servicos.listar(), Expansao.de(expand, Respostas.SERVICO));
     }
 
     @GetMapping("/{id}")
-    public Servico buscar(@PathVariable Long id) {
-        return servicos.buscar(id);
+    public ServicoResposta buscar(@PathVariable Long id, @RequestParam(required = false) String expand) {
+        return respostas.servico(servicos.buscar(id), Expansao.de(expand, Respostas.SERVICO));
     }
 
     @PostMapping

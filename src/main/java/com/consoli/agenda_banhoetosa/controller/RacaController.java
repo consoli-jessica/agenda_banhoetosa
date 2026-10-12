@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,19 +23,21 @@ import com.consoli.agenda_banhoetosa.service.RacaService;
 public class RacaController {
 
     private final RacaService racas;
+    private final Respostas respostas;
 
-    public RacaController(RacaService racas) {
+    public RacaController(RacaService racas, Respostas respostas) {
         this.racas = racas;
+        this.respostas = respostas;
     }
 
     @GetMapping
-    public List<Raca> listar() {
-        return racas.listar();
+    public List<RacaResposta> listar(@RequestParam(required = false) String expand) {
+        return respostas.racas(racas.listar(), Expansao.de(expand, Respostas.RACA));
     }
 
     @GetMapping("/{id}")
-    public Raca buscar(@PathVariable Long id) {
-        return racas.buscar(id);
+    public RacaResposta buscar(@PathVariable Long id, @RequestParam(required = false) String expand) {
+        return respostas.raca(racas.buscar(id), Expansao.de(expand, Respostas.RACA));
     }
 
     @PostMapping

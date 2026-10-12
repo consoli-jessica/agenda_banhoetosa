@@ -24,6 +24,14 @@ public class CachorroService {
         return cachorros.findAll();
     }
 
+    public List<Cachorro> listarPorDono(Long donoId) {
+        return cachorros.findByDonoId(donoId);
+    }
+
+    public List<Cachorro> listarPorRaca(Long racaId) {
+        return cachorros.findByRacaId(racaId);
+    }
+
     public Cachorro buscar(Long id) {
         return cachorros.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Cachorro " + id));

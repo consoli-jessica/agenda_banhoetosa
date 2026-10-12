@@ -24,6 +24,18 @@ public class AgendamentoService {
         return agendamentos.findAll();
     }
 
+    public List<Agendamento> listarPorCliente(Long clienteId) {
+        return agendamentos.findByClienteId(clienteId);
+    }
+
+    public List<Agendamento> listarPorCachorro(Long cachorroId) {
+        return agendamentos.findByCachorroId(cachorroId);
+    }
+
+    public List<Agendamento> listarPorServico(Long servicoId) {
+        return agendamentos.findByServicoId(servicoId);
+    }
+
     public Agendamento buscar(Long id) {
         return agendamentos.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Agendamento " + id));

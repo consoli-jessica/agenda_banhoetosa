@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,21 +27,24 @@ public class CachorroController {
     private final CachorroService cachorros;
     private final ClienteService clientes;
     private final RacaService racas;
+    private final Respostas respostas;
 
-    public CachorroController(CachorroService cachorros, ClienteService clientes, RacaService racas) {
+    public CachorroController(CachorroService cachorros, ClienteService clientes, RacaService racas,
+            Respostas respostas) {
         this.cachorros = cachorros;
         this.clientes = clientes;
         this.racas = racas;
+        this.respostas = respostas;
     }
 
     @GetMapping
-    public List<Cachorro> listar() {
-        return cachorros.listar();
+    public List<CachorroResposta> listar(@RequestParam(required = false) String expand) {
+        return respostas.cachorros(cachorros.listar(), Expansao.de(expand, Respostas.CACHORRO));
     }
 
     @GetMapping("/{id}")
-    public Cachorro buscar(@PathVariable Long id) {
-        return cachorros.buscar(id);
+    public CachorroResposta buscar(@PathVariable Long id, @RequestParam(required = false) String expand) {
+        return respostas.cachorro(cachorros.buscar(id), Expansao.de(expand, Respostas.CACHORRO));
     }
 
     @PostMapping

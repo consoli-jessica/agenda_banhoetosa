@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,19 +25,21 @@ import com.consoli.agenda_banhoetosa.service.ClienteService;
 public class ClienteController {
 
     private final ClienteService clientes;
+    private final Respostas respostas;
 
-    public ClienteController(ClienteService clientes) {
+    public ClienteController(ClienteService clientes, Respostas respostas) {
         this.clientes = clientes;
+        this.respostas = respostas;
     }
 
     @GetMapping
-    public List<Cliente> listar() {
-        return clientes.listar();
+    public List<ClienteResposta> listar(@RequestParam(required = false) String expand) {
+        return respostas.clientes(clientes.listar(), Expansao.de(expand, Respostas.CLIENTE));
     }
 
     @GetMapping("/{id}")
-    public Cliente buscar(@PathVariable Long id) {
-        return clientes.buscar(id);
+    public ClienteResposta buscar(@PathVariable Long id, @RequestParam(required = false) String expand) {
+        return respostas.cliente(clientes.buscar(id), Expansao.de(expand, Respostas.CLIENTE));
     }
 
     @PostMapping

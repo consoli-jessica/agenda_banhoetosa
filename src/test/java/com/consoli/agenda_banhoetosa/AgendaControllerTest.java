@@ -95,7 +95,54 @@ class AgendaControllerTest {
 
         mockMvc.perform(get("/agendamentos"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(agendamentoId));
+                .andExpect(jsonPath("$[0].id").value(agendamentoId))
+                .andExpect(jsonPath("$[0].cachorroId").value(cachorroId))
+                .andExpect(jsonPath("$[0].cachorro").doesNotExist());
+
+        mockMvc.perform(get("/cachorros/" + cachorroId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.donoId").value(clienteId))
+                .andExpect(jsonPath("$.dono").doesNotExist());
+
+        mockMvc.perform(get("/cachorros?expand=dono,raca"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].dono.nomeCompleto").value("Ana Souza"))
+                .andExpect(jsonPath("$[0].raca.nome").value("Poodle"));
+
+        mockMvc.perform(get("/agendamentos/" + agendamentoId + "?expand=cachorro.dono,servico"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.cachorro.dono.nomeCompleto").value("Ana Souza"))
+                .andExpect(jsonPath("$.cachorro.raca").doesNotExist())
+                .andExpect(jsonPath("$.servico.descricao").value("Banho"))
+                .andExpect(jsonPath("$.cliente").doesNotExist());
+
+        mockMvc.perform(get("/clientes/" + clienteId + "?expand=cachorros.raca"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.cachorros[0].nome").value("Bob"))
+                .andExpect(jsonPath("$.cachorros[0].raca.nome").value("Poodle"))
+                .andExpect(jsonPath("$.cachorros[0].dono").doesNotExist());
+
+        mockMvc.perform(get("/racas/" + racaId + "?expand=cachorros"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.cachorros[0].id").value(cachorroId));
+
+        mockMvc.perform(get("/servicos/" + servicoId + "?expand=agendamentos.cliente"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.agendamentos[0].cliente.nomeCompleto").value("Ana Souza"))
+                .andExpect(jsonPath("$.agendamentos[0].servico").doesNotExist());
+
+        mockMvc.perform(get("/cachorros/" + cachorroId + "?expand=agendamentos"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.agendamentos[0].id").value(agendamentoId))
+                .andExpect(jsonPath("$.agendamentos[0].cachorro").doesNotExist());
+
+        mockMvc.perform(get("/agendamentos/" + agendamentoId + "?expand=*"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.cliente.id").value(clienteId))
+                .andExpect(jsonPath("$.cachorro.raca.nome").value("Poodle"));
+
+        mockMvc.perform(get("/cachorros/" + cachorroId + "?expand=foo"))
+                .andExpect(status().isBadRequest());
 
         mockMvc.perform(delete("/agendamentos/" + agendamentoId))
                 .andExpect(status().isNoContent());
