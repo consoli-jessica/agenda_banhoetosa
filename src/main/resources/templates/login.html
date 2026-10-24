@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
-<head th:replace="~{layout :: head}"></head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Entrar · Cãobeleleiro</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
 <body class="login-body">
-<main class="cartao estreito">
-    <p class="marca">Banho e Tosa</p>
+<main class="cartao estreito login-caixa">
+    <div class="topo-login">
+        <p class="nome-loja">Cãobeleleiro</p>
+        <div class="logo-login">
+            <img th:src="@{/img/logo.png}" alt="Logo do Cãobeleleiro">
+        </div>
+    </div>
     <h1>Entrar</h1>
     <div th:replace="~{layout :: avisos}"></div>
     <form method="post" th:action="@{/login}">
