@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head th:replace="~{layout :: head}"></head>
-<body>
+<body class="inicio">
 <header th:replace="~{layout :: nav}"></header>
 <main class="home">
-    <img th:src="@{/img/cachorro.png}" alt="Cachorro de touca rosa pronto para o banho">
+    <div class="cao">
+        <img th:src="@{/img/cachorro.png}" alt="Cachorro de touca rosa pronto para o banho">
+        <span class="olho olho-esq" aria-hidden="true"><i></i></span>
+        <span class="olho olho-dir" aria-hidden="true"><i></i></span>
+    </div>
     <a class="botao cta" th:href="@{/agenda}">Agende Aqui</a>
 </main>
+<script th:src="@{/js/olhos.js}"></script>
 </body>
 </html>

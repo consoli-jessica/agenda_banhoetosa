@@ -112,7 +112,58 @@ h2 { margin: 0; font-size: 1.25rem; }
 
 form, .cartao { padding: 1rem; }
 
-.estreito { width: min(100%, 28rem); }
+.estreito { width: min(100%, 32rem); }
+
+.login-caixa {
+    padding: 0 0 1rem;
+    overflow: hidden;
+}
+
+.topo-login {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) min(14rem, 48%);
+    align-items: stretch;
+    min-height: 14rem;
+}
+
+.nome-loja {
+    margin: 0;
+    padding: 0.85rem 0.55rem 0.5rem 1rem;
+    align-self: start;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    font-size: clamp(1.45rem, 4.6vw, 2rem);
+    font-weight: 700;
+    line-height: 1.05;
+    text-align: left;
+    color: #f72973;
+}
+
+.logo-login {
+    overflow: hidden;
+    background: #f72973;
+    min-height: 14rem;
+}
+
+.logo-login img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transform: scale(1.24);
+    transform-origin: center;
+}
+
+.login-caixa h1 {
+    margin: 0.9rem 1rem 0.75rem;
+}
+
+.login-caixa .ok,
+.login-caixa .erro,
+.login-caixa .dica {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
 
 label { display: block; margin-bottom: 0.8rem; font-size: 0.92rem; }
 
@@ -235,7 +286,15 @@ th { font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; color
     gap: 1.4rem;
 }
 
-.home img {
+.home .cao {
+    position: relative;
+    display: inline-block;
+    max-width: min(92vw, 36rem);
+    line-height: 0;
+}
+
+.home .cao img {
+    display: block;
     width: auto;
     max-width: min(92vw, 36rem);
     max-height: min(76vh, 46rem);
@@ -244,6 +303,34 @@ th { font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; color
     background: transparent;
     filter: drop-shadow(0 14px 16px rgb(120 30 70 / 16%));
 }
+
+body.inicio, body.inicio * {
+    cursor: url("/img/petisco.png") 16 16, auto;
+}
+
+.olho {
+    position: absolute;
+    border-radius: 50%;
+    overflow: hidden;
+    pointer-events: none;
+    background: #4a342e;
+}
+
+.olho i {
+    position: absolute;
+    width: 62%;
+    height: 78%;
+    left: 50%;
+    top: 50%;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 32% 30%, #fff 0 16%, transparent 18%),
+        radial-gradient(circle at 50% 50%, #120c0a 0 46%, #3a2824 47% 100%);
+    transform: translate(-50%, -50%);
+}
+
+.olho-esq { left: 30.6%; top: 22.8%; width: 7%; height: 2.7%; }
+.olho-dir { left: 48.1%; top: 22.9%; width: 6.4%; height: 2.9%; }
 
 .cta { font-size: 1.15rem; padding: 0.8rem 1.8rem; }
 
