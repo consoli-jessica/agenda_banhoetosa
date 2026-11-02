@@ -1,5 +1,6 @@
 package com.consoli.agenda_banhoetosa.controller;
 
+import java.text.Collator;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -165,7 +166,7 @@ public class PainelController {
         model.addAttribute("titulo", "Clientes");
         model.addAttribute("secao", "clientes");
         model.addAttribute("lista", clientes.listar().stream()
-                .sorted(Comparator.comparing(Cliente::getNomeCompleto, String.CASE_INSENSITIVE_ORDER))
+                .sorted(Comparator.comparing(Cliente::getNomeCompleto, Comparator.nullsLast(alfabetica())))
                 .toList());
         return "clientes";
     }
@@ -195,13 +196,13 @@ public class PainelController {
         model.addAttribute("secao", "cachorros");
         model.addAttribute("lista", respostas.cachorros(cachorros.listar(),
                 Expansao.de("dono,raca", Respostas.CACHORRO)).stream()
-                .sorted(Comparator.comparing(CachorroResposta::nome, String.CASE_INSENSITIVE_ORDER))
+                .sorted(Comparator.comparing(CachorroResposta::nome, Comparator.nullsLast(alfabetica())))
                 .toList());
         model.addAttribute("donos", clientes.listar().stream()
-                .sorted(Comparator.comparing(Cliente::getNomeCompleto, String.CASE_INSENSITIVE_ORDER))
+                .sorted(Comparator.comparing(Cliente::getNomeCompleto, Comparator.nullsLast(alfabetica())))
                 .toList());
         model.addAttribute("racas", racas.listar().stream()
-                .sorted(Comparator.comparing(Raca::getNome, String.CASE_INSENSITIVE_ORDER))
+                .sorted(Comparator.comparing(Raca::getNome, Comparator.nullsLast(alfabetica())))
                 .toList());
         return "cachorros";
     }
@@ -328,10 +329,10 @@ public class PainelController {
         model.addAttribute("secao", "agenda");
         model.addAttribute("cachorros", respostas.cachorros(cachorros.listar(),
                 Expansao.de("dono,raca", Respostas.CACHORRO)).stream()
-                .sorted(Comparator.comparing(CachorroResposta::nome, String.CASE_INSENSITIVE_ORDER))
+                .sorted(Comparator.comparing(CachorroResposta::nome, Comparator.nullsLast(alfabetica())))
                 .toList());
         model.addAttribute("servicos", servicos.listar().stream()
-                .sorted(Comparator.comparing(Servico::getDescricao, String.CASE_INSENSITIVE_ORDER))
+                .sorted(Comparator.comparing(Servico::getDescricao, Comparator.nullsLast(alfabetica())))
                 .toList());
         return "agendamento";
     }
@@ -398,6 +399,12 @@ public class PainelController {
 
     private static boolean vazio(String valor) {
         return valor == null || valor.isBlank();
+    }
+
+    private static Comparator<String> alfabetica() {
+        Collator collator = Collator.getInstance(PT);
+        collator.setStrength(Collator.PRIMARY);
+        return (a, b) -> collator.compare(a, b);
     }
 
     public record DiaCalendario(String iso, int numero, String css, List<Chip> chips) {

@@ -22,7 +22,11 @@
         </form>
         <div>
             <h2>Cadastrados</h2>
-            <table>
+            <label class="busca">Buscar
+                <input id="busca-clientes" type="search" placeholder="Nome do cliente" autocomplete="off">
+            </label>
+            <p id="busca-vazia" class="dica" hidden>Nenhum cliente com esse nome.</p>
+            <table id="tabela-clientes">
                 <thead>
                 <tr><th>Nome</th><th>Telefone</th><th>Endereço</th></tr>
                 </thead>
@@ -30,7 +34,7 @@
                 <tr th:if="${#lists.isEmpty(lista)}">
                     <td colspan="3">Nenhum cliente cadastrado.</td>
                 </tr>
-                <tr th:each="cliente : ${lista}">
+                <tr th:each="cliente : ${lista}" th:data-nome="${cliente.nomeCompleto}">
                     <td th:text="${cliente.nomeCompleto}">Ana</td>
                     <td th:text="${cliente.telefone}">11999999999</td>
                     <td th:text="${cliente.endereco}">Rua A</td>
@@ -40,5 +44,28 @@
         </div>
     </div>
 </main>
+<script>
+    (function () {
+        var campo = document.getElementById("busca-clientes");
+        var aviso = document.getElementById("busca-vazia");
+        var linhas = Array.prototype.slice.call(document.querySelectorAll("#tabela-clientes tbody tr[data-nome]"));
+        if (!campo) return;
+
+        function semAcento(texto) {
+            return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pt-BR");
+        }
+
+        campo.addEventListener("input", function () {
+            var termo = semAcento(campo.value.trim());
+            var visiveis = 0;
+            linhas.forEach(function (linha) {
+                var ok = semAcento(linha.getAttribute("data-nome")).indexOf(termo) !== -1;
+                linha.hidden = !ok;
+                if (ok) visiveis++;
+            });
+            aviso.hidden = termo === "" || visiveis > 0 || linhas.length === 0;
+        });
+    })();
+</script>
 </body>
 </html>

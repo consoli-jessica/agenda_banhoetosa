@@ -2,6 +2,7 @@ package com.consoli.agenda_banhoetosa;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -47,7 +48,7 @@ class PainelControllerTest {
         mockMvc.perform(get("/").session(session))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Agende Aqui")))
-                .andExpect(content().string(containsString("cachorro.png")));
+                .andExpect(content().string(containsString("logo-sem-olhos.png")));
 
         mockMvc.perform(post("/app/clientes").session(session)
                         .param("nomeCompleto", "Lia Pires")
@@ -101,6 +102,32 @@ class PainelControllerTest {
 
         mockMvc.perform(get("/agenda").session(session).param("mes", "2026-10"))
                 .andExpect(content().string(not(containsString("Thor"))));
+    }
+
+    @Test
+    void clientesFicamEmOrdemAlfabetica() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        mockMvc.perform(post("/login").session(session)
+                        .param("usuario", "atendente").param("senha", "banho123"))
+                .andExpect(redirectedUrl("/"));
+
+        for (String nome : new String[] { "Zeca Testeordem", "Ágata Testeordem", "ana testeordem" }) {
+            mockMvc.perform(post("/app/clientes").session(session)
+                            .param("nomeCompleto", nome)
+                            .param("telefone", "11900000000"))
+                    .andExpect(redirectedUrl("/app/clientes"));
+        }
+
+        String html = mockMvc.perform(get("/app/clientes").session(session))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("busca-clientes")))
+                .andReturn().getResponse().getContentAsString();
+
+        int agata = html.indexOf("Ágata Testeordem");
+        int ana = html.indexOf("ana testeordem");
+        int zeca = html.indexOf("Zeca Testeordem");
+        assertTrue(agata >= 0 && ana >= 0 && zeca >= 0);
+        assertTrue(agata < ana && ana < zeca);
     }
 
     private long id(MvcResult result) throws Exception {

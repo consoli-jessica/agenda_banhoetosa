@@ -51,7 +51,8 @@ header {
     display: flex;
     gap: 1rem;
     align-items: center;
-    padding: 0.85rem 1.25rem;
+    min-height: 4.75rem;
+    padding: 0.7rem 1.25rem;
     background: #9a3168;
     color: #fff5fa;
 }
@@ -67,7 +68,9 @@ header nav a, header .link {
 
 header nav a.ativo, header nav a:hover { background: #b44580; }
 
-.marca { font-family: Palatino, "Palatino Linotype", Georgia, serif; font-weight: 700; letter-spacing: 0.01em; }
+.marca { display: flex; align-items: center; line-height: 0; }
+
+.marca img { height: 3.35rem; width: auto; display: block; }
 
 header form {
     margin: 0;
@@ -120,38 +123,18 @@ form, .cartao { padding: 1rem; }
 }
 
 .topo-login {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) min(14rem, 48%);
-    align-items: stretch;
-    min-height: 14rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 16.5rem;
+    padding: 1.5rem 1.25rem 0.85rem;
+    background: var(--card);
 }
 
-.nome-loja {
-    margin: 0;
-    padding: 0.85rem 0.55rem 0.5rem 1rem;
-    align-self: start;
-    font-family: "Comic Sans MS", "Comic Sans", cursive;
-    font-size: clamp(1.45rem, 4.6vw, 2rem);
-    font-weight: 700;
-    line-height: 1.05;
-    text-align: left;
-    color: #f72973;
-}
-
-.logo-login {
-    overflow: hidden;
-    background: #f72973;
-    min-height: 14rem;
-}
-
-.logo-login img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+.topo-login img {
+    width: min(88%, 17.5rem);
+    height: auto;
     display: block;
-    transform: scale(1.24);
-    transform-origin: center;
 }
 
 .login-caixa h1 {
@@ -208,6 +191,8 @@ button.perigo { background: transparent; color: var(--clay); border: 1px solid v
 .erro { background: #fdecea; color: var(--clay); }
 
 .dica { color: var(--muted); font-size: 0.92rem; }
+
+.busca { margin-bottom: 0.8rem; }
 
 .painel {
     display: grid;
@@ -294,6 +279,8 @@ th { font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; color
 }
 
 .home .cao img {
+    position: relative;
+    z-index: 1;
     display: block;
     width: auto;
     max-width: min(92vw, 36rem);
@@ -305,11 +292,12 @@ th { font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; color
 }
 
 body.inicio, body.inicio * {
-    cursor: url("/img/petisco.png") 16 16, auto;
+    cursor: url("/img/osso-cursor.png") 64 69, auto;
 }
 
 .olho {
     position: absolute;
+    z-index: 0;
     border-radius: 50%;
     overflow: hidden;
     pointer-events: none;
@@ -329,8 +317,8 @@ body.inicio, body.inicio * {
     transform: translate(-50%, -50%);
 }
 
-.olho-esq { left: 30.6%; top: 22.8%; width: 7%; height: 2.7%; }
-.olho-dir { left: 48.1%; top: 22.9%; width: 6.4%; height: 2.9%; }
+.olho-esq { left: 41.4%; top: 30.2%; width: 5.5%; height: 6.3%; }
+.olho-dir { left: 53.7%; top: 30.35%; width: 5.5%; height: 6.6%; }
 
 .cta { font-size: 1.15rem; padding: 0.8rem 1.8rem; }
 

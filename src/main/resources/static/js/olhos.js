@@ -9,12 +9,13 @@
             var caixa = olho.getBoundingClientRect();
             var dx = evento.clientX - (caixa.left + caixa.width / 2);
             var dy = evento.clientY - (caixa.top + caixa.height / 2);
-            var angulo = Math.atan2(dy, dx);
             var alcance = Math.min(caixa.width, caixa.height) * 0.42;
-            var distancia = Math.min(Math.hypot(dx, dy), alcance);
+            var distancia = Math.hypot(dx, dy);
+            var escala = distancia > alcance ? alcance / distancia : 1;
+            var ox = Math.max(-caixa.width * 0.18, dx * escala);
+            var oy = Math.max(-caixa.height * 0.10, dy * escala);
             olho.firstElementChild.style.transform =
-                "translate(calc(-50% + " + (Math.cos(angulo) * distancia) + "px), calc(-50% + " +
-                (Math.sin(angulo) * distancia) + "px))";
+                "translate(calc(-50% + " + ox + "px), calc(-50% + " + oy + "px))";
         });
     });
 })();

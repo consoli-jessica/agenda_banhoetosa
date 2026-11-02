@@ -8,7 +8,7 @@
 </head>
 <body>
 <header th:fragment="nav">
-    <a class="marca" th:href="@{/}">Banho e Tosa</a>
+    <a class="marca" th:href="@{/}"><img th:src="@{/img/logoenome.png}" alt="Cãobeleleiro"></a>
     <nav>
         <a th:href="@{/agenda}" th:classappend="${secao == 'agenda'} ? 'ativo'">Agenda</a>
         <a th:href="@{/app/clientes}" th:classappend="${secao == 'clientes'} ? 'ativo'">Clientes</a>
